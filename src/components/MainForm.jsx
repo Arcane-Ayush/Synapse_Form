@@ -3,6 +3,7 @@ import { LayoutList, Layers, Send, CheckCircle2, X, ArrowUpRight } from 'lucide-
 import { TextInput, TextArea, CheckboxGroup, cn } from './FormInputs';
 
 import gifSynapse from '../assets/Gif_synapse.mp4';
+import gifSynapseWebm from '../assets/Gif_synapse.webm';
 import imgWebDev from '../assets/web_development_1780904007038.png';
 import imgAi from '../assets/ai_machine_learning_1780904019865.png';
 import imgSystems from '../assets/systems_programming_1780904031735.png';
@@ -119,6 +120,15 @@ export default function MainForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const updateField = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -411,43 +421,51 @@ export default function MainForm() {
     <>
       <ParticleBackground />
       <div className="max-w-5xl mx-auto px-2 sm:px-4 md:px-8 py-4 md:py-8 relative z-10">
-        <div className="sticky top-0 z-50 flex flex-col md:flex-row justify-between items-center mb-12 border-b border-white/5 pb-6 pt-6 bg-black/60 backdrop-blur-xl -mx-2 px-4 sm:-mx-4 sm:px-8 md:-mx-8 md:px-12 rounded-b-2xl shadow-[0_10px_30px_-15px_rgba(0,0,0,0.8)]">
-          <div className="flex flex-col items-center md:items-start text-center md:text-left">
-            <h1 className="text-5xl md:text-6xl font-semibold text-white tracking-tight">Synapse Society</h1>
-            <div className="mt-6 mb-4 max-w-sm w-full rounded-md shadow-[0_0_30px_rgba(147,51,234,0.3)] overflow-hidden">
-              <video
-                src={gifSynapse}
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-auto object-cover"
-              />
+          <div className={cn(
+            "sticky top-0 z-50 flex justify-between items-center mb-12 border-b border-white/5 bg-black/60 backdrop-blur-xl shadow-[0_10px_30px_-15px_rgba(0,0,0,0.8)] transition-all duration-500 rounded-b-2xl md:-mx-8 md:px-12",
+            isScrolled ? "flex-row pb-2 pt-2 -mx-2 px-4 sm:-mx-4 sm:px-8 md:pb-6 md:pt-6" : "flex-col md:flex-row pb-6 pt-6 -mx-2 px-4 sm:-mx-4 sm:px-8"
+          )}>
+            <div className={cn("flex items-center text-center md:text-left transition-all duration-500", isScrolled ? "flex-row space-x-3 md:flex-col md:items-start md:space-x-0" : "flex-col md:items-start")}>
+              <h1 className={cn("font-semibold text-white tracking-tight transition-all duration-500", isScrolled ? "text-2xl md:text-6xl" : "text-5xl md:text-6xl")}>Synapse Society</h1>
+              <div className={cn("rounded-md shadow-[0_0_30px_rgba(147,51,234,0.3)] overflow-hidden transition-all duration-500", isScrolled ? "w-8 h-8 mt-0 mb-0 md:mt-6 md:mb-4 md:max-w-sm md:w-full md:h-auto" : "mt-6 mb-4 max-w-sm w-full")}>
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                  className="w-full h-full md:h-auto object-cover"
+                >
+                  <source src={gifSynapseWebm} type="video/webm" />
+                  <source src={gifSynapse} type="video/mp4" />
+                </video>
+              </div>
+              <p className={cn("text-zinc-400 font-light text-base md:text-lg tracking-wide transition-all duration-500", isScrolled ? "hidden md:block opacity-100" : "animate-fade-in")}>
+                Recruitment Form &bull; 2026
+              </p>
             </div>
-            <p className="text-zinc-400 font-light text-base md:text-lg tracking-wide">Recruitment Form &bull; 2026</p>
-          </div>
-
-          <div className="mt-8 md:mt-0 flex justify-center md:justify-end">
-            <div className="flex bg-white/5 p-1 rounded-md border border-white/10">
-            <button
-              type="button"
-              onClick={() => setViewMode('strip')}
-              className={cn("flex items-center px-4 py-2 rounded-md text-sm font-medium transition-all duration-300", viewMode === 'strip' ? "bg-white/10 text-white shadow-sm" : "text-zinc-500 hover:text-zinc-300")}
-            >
-              <LayoutList className="w-4 h-4 mr-2" />
-              Scroll View
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode('wizard')}
-              className={cn("flex items-center px-4 py-2 rounded-md text-sm font-medium transition-all duration-300", viewMode === 'wizard' ? "bg-white/10 text-white shadow-sm" : "text-zinc-500 hover:text-zinc-300")}
-            >
-              <Layers className="w-4 h-4 mr-2" />
-              Step View
-            </button>
+  
+            <div className={cn("flex justify-center md:justify-end transition-all duration-500", isScrolled ? "mt-0 md:mt-0" : "mt-8 md:mt-0")}>
+              <div className="flex bg-white/5 p-1 rounded-md border border-white/10">
+              <button
+                type="button"
+                onClick={() => setViewMode('strip')}
+                className={cn("flex items-center rounded-md text-sm font-medium transition-all duration-300", isScrolled ? "p-2 md:px-4 md:py-2" : "px-4 py-2", viewMode === 'strip' ? "bg-white/10 text-white shadow-sm" : "text-zinc-500 hover:text-zinc-300")}
+              >
+                <LayoutList className={cn("w-4 h-4", isScrolled ? "md:mr-2" : "mr-2")} />
+                <span className={isScrolled ? "hidden md:inline" : ""}>Scroll View</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('wizard')}
+                className={cn("flex items-center rounded-md text-sm font-medium transition-all duration-300", isScrolled ? "p-2 md:px-4 md:py-2" : "px-4 py-2", viewMode === 'wizard' ? "bg-white/10 text-white shadow-sm" : "text-zinc-500 hover:text-zinc-300")}
+              >
+                <Layers className={cn("w-4 h-4", isScrolled ? "md:mr-2" : "mr-2")} />
+                <span className={isScrolled ? "hidden md:inline" : ""}>Step View</span>
+              </button>
+              </div>
             </div>
           </div>
-        </div>
 
         <form onSubmit={handleSubmit} className="relative z-10 glass-panel p-4 sm:p-6 md:p-8">
           {viewMode === 'strip' ? (
@@ -470,11 +488,16 @@ export default function MainForm() {
             </div>
           ) : (
             <div className="pb-6">
-              <div className="mb-14 flex justify-between relative px-2">
-                <div className="absolute top-1/2 left-0 right-0 h-[2px] bg-white/5 -z-10 rounded-full"></div>
+              <div className={cn(
+                "flex justify-between relative z-40 transition-all duration-300",
+                isScrolled
+                  ? "sticky top-[68px] md:top-[88px] bg-black/80 backdrop-blur-xl py-4 -mx-4 px-6 sm:-mx-6 sm:px-8 md:-mx-8 md:px-10 border-b border-white/10 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.8)] rounded-b-2xl mb-8"
+                  : "mb-14 px-2"
+              )}>
+                <div className="absolute top-1/2 left-0 right-0 h-[2px] bg-white/5 -z-10 rounded-full mx-2 md:mx-6"></div>
                 <div
-                  className="absolute top-1/2 left-0 h-[2px] bg-purple-500 -z-10 transition-all duration-700 ease-in-out shadow-[0_0_10px_rgba(147,51,234,0.5)] rounded-full"
-                  style={{ width: `${((step - 1) / 2) * 100}%` }}
+                  className="absolute top-1/2 left-0 h-[2px] bg-purple-500 -z-10 transition-all duration-700 ease-in-out shadow-[0_0_10px_rgba(147,51,234,0.5)] rounded-full mx-2 md:mx-6"
+                  style={{ width: `calc(${((step - 1) / 2) * 100}% - 1rem)` }}
                 ></div>
                 {[1, 2, 3].map(s => (
                   <div
