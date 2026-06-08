@@ -124,7 +124,11 @@ export default function MainForm() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(prev => {
+        if (!prev && window.scrollY > 80) return true;
+        if (prev && window.scrollY < 20) return false;
+        return prev;
+      });
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
