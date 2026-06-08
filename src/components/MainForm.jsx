@@ -411,8 +411,8 @@ export default function MainForm() {
     <>
       <ParticleBackground />
       <div className="max-w-5xl mx-auto px-2 sm:px-4 md:px-8 py-4 md:py-8 relative z-10">
-        <div className="relative z-10 flex flex-col md:flex-row justify-between items-center mb-12 border-b border-white/5 pb-8 pt-4">
-          <div className="flex flex-col items-center md:items-start text-center md:text-left px-2 md:px-0">
+        <div className="sticky top-0 z-50 flex flex-col md:flex-row justify-between items-center mb-12 border-b border-white/5 pb-6 pt-6 bg-black/60 backdrop-blur-xl -mx-2 px-4 sm:-mx-4 sm:px-8 md:-mx-8 md:px-12 rounded-b-2xl shadow-[0_10px_30px_-15px_rgba(0,0,0,0.8)]">
+          <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <h1 className="text-5xl md:text-6xl font-semibold text-white tracking-tight">Synapse Society</h1>
             <div className="mt-6 mb-4 max-w-sm w-full rounded-md shadow-[0_0_30px_rgba(147,51,234,0.3)] overflow-hidden">
               <video
@@ -427,7 +427,8 @@ export default function MainForm() {
             <p className="text-zinc-400 font-light text-base md:text-lg tracking-wide">Recruitment Form &bull; 2026</p>
           </div>
 
-          <div className="mt-8 md:mt-0 flex bg-white/5 p-1 rounded-md border border-white/10 backdrop-blur-md">
+          <div className="mt-8 md:mt-0 flex justify-center md:justify-end">
+            <div className="flex bg-white/5 p-1 rounded-md border border-white/10">
             <button
               type="button"
               onClick={() => setViewMode('strip')}
@@ -444,6 +445,7 @@ export default function MainForm() {
               <Layers className="w-4 h-4 mr-2" />
               Step View
             </button>
+            </div>
           </div>
         </div>
 
