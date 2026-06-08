@@ -170,11 +170,10 @@ const Reveal = ({ children, delay = 0 }) => {
   return (
     <div
       ref={ref}
-      className={`transition-[opacity,transform] duration-700 ease-out will-change-[transform,opacity] ${
-        isVisible
+      className={`transition-[opacity,transform] duration-700 ease-out will-change-[transform,opacity] ${isVisible
           ? "opacity-100 translate-y-0 revealed"
           : "opacity-0 translate-y-12"
-      }`}
+        }`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
@@ -198,8 +197,8 @@ export default function MainForm() {
       if (!ticking) {
         requestAnimationFrame(() => {
           setIsScrolled((prev) => {
-            if (!prev && window.scrollY > 30) return true;
-            if (prev && window.scrollY < 10) return false;
+            if (!prev && window.scrollY > 150) return true;
+            if (prev && window.scrollY < 150) return false;
             return prev;
           });
           ticking = false;
@@ -374,7 +373,46 @@ export default function MainForm() {
         </div>
       </div>
     );
-  }
+  };
+
+  const renderViewButtons = (isSmall) => (
+    <div className="flex bg-white/5 p-1 rounded-md border border-white/10">
+      <button
+        type="button"
+        onClick={() => setViewMode("strip")}
+        className={cn(
+          "flex items-center rounded-md text-sm font-medium transition-colors duration-200",
+          isSmall ? "p-2 md:px-4 md:py-2" : "px-4 py-2",
+          viewMode === "strip"
+            ? "bg-white/10 text-white shadow-sm"
+            : "text-zinc-500 hover:text-zinc-300",
+        )}
+      >
+        <LayoutList
+          className={cn("w-4 h-4", isSmall ? "mr-0 md:mr-2" : "mr-2")}
+        />
+        <span className={isSmall ? "hidden md:inline" : ""}>
+          Scroll View
+        </span>
+      </button>
+      <button
+        type="button"
+        onClick={() => setViewMode("wizard")}
+        className={cn(
+          "flex items-center rounded-md text-sm font-medium transition-colors duration-200",
+          isSmall ? "p-2 md:px-4 md:py-2" : "px-4 py-2",
+          viewMode === "wizard"
+            ? "bg-white/10 text-white shadow-sm"
+            : "text-zinc-500 hover:text-zinc-300",
+        )}
+      >
+        <Layers className={cn("w-4 h-4", isSmall ? "mr-0 md:mr-2" : "mr-2")} />
+        <span className={isSmall ? "hidden md:inline" : ""}>
+          Step View
+        </span>
+      </button>
+    </div>
+  );
 
   const renderGroup1 = () => (
     <Reveal delay={100}>
@@ -533,118 +571,63 @@ export default function MainForm() {
   return (
     <>
       <ParticleBackground />
-      <div className="max-w-5xl mx-auto px-2 sm:px-4 md:px-8 py-4 md:py-8 relative z-10">
-        <div
-          className={cn(
-            "sticky top-0 z-50 flex justify-between items-center mb-12 border-b border-white/5 bg-black/60 backdrop-blur-xl shadow-[0_10px_30px_-15px_rgba(0,0,0,0.8)] transition-all duration-500",
-            isScrolled
-              ? "flex-row pb-2 pt-2 -mx-2 px-4 sm:-mx-4 sm:px-8 md:-mx-8 md:px-12 rounded-b-xl"
-              : "flex-col md:flex-row pb-6 pt-6 -mx-2 px-4 sm:-mx-4 sm:px-8 md:-mx-8 md:px-12 rounded-b-2xl",
-          )}
-        >
-          <div
-            className={cn(
-              "flex items-center text-center md:text-left transition-all duration-500",
-              isScrolled
-                ? "flex-row space-x-3 md:space-x-4"
-                : "flex-col md:items-start",
-            )}
-          >
-            <h1
-              className={cn(
-                "font-semibold text-white tracking-tight transition-all duration-500",
-                isScrolled ? "text-2xl md:text-3xl" : "text-5xl md:text-6xl",
-              )}
-            >
-              Synapse Society
-            </h1>
-            <div
-              className={cn(
-                "rounded-md shadow-[0_0_30px_rgba(147,51,234,0.3)] overflow-hidden transition-all duration-500 flex-shrink-0",
-                isScrolled
-                  ? "w-8 h-8 md:w-12 md:h-12 mt-0 mb-0"
-                  : "mt-6 mb-4 max-w-sm w-full",
-              )}
-            >
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-                className="w-full h-full object-cover"
-              >
-                <source src={gifSynapseWebm} type="video/webm" />
-                <source src={gifSynapse} type="video/mp4" />
-              </video>
-            </div>
-            <p
-              className={cn(
-                "text-zinc-400 font-light text-base md:text-lg tracking-wide transition-all duration-500",
-                isScrolled ? "hidden opacity-0" : "animate-fade-in opacity-100",
-              )}
-            >
-              Recruitment Form &bull; 2026
-            </p>
-          </div>
 
-          <div
-            className={cn(
-              "flex justify-center md:justify-end transition-all duration-500",
-              isScrolled ? "mt-0" : "mt-8 md:mt-0",
-            )}
-          >
-            <div className="flex bg-white/5 p-1 rounded-md border border-white/10">
-              <button
-                type="button"
-                onClick={() => setViewMode("strip")}
-                className={cn(
-                  "flex items-center rounded-md text-sm font-medium transition-colors duration-200",
-                  isScrolled ? "p-2 md:px-4 md:py-2" : "px-4 py-2",
-                  viewMode === "strip"
-                    ? "bg-white/10 text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-300",
-                )}
-              >
-                <LayoutList
-                  className={cn(
-                    "w-4 h-4",
-                    isScrolled ? "mr-0 md:mr-2" : "mr-2",
-                  )}
-                />
-                <span className={isScrolled ? "hidden md:inline" : ""}>
-                  Scroll View
-                </span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewMode("wizard")}
-                className={cn(
-                  "flex items-center rounded-md text-sm font-medium transition-colors duration-200",
-                  isScrolled ? "p-2 md:px-4 md:py-2" : "px-4 py-2",
-                  viewMode === "wizard"
-                    ? "bg-white/10 text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-300",
-                )}
-              >
-                <Layers
-                  className={cn(
-                    "w-4 h-4",
-                    isScrolled ? "mr-0 md:mr-2" : "mr-2",
-                  )}
-                />
-                <span className={isScrolled ? "hidden md:inline" : ""}>
-                  Step View
-                </span>
-              </button>
+      {/* SMALL HEADER - FIXED */}
+      <div className="fixed top-0 left-0 right-0 z-50 pointer-events-none flex justify-center w-full">
+        <div className={cn(
+          "max-w-5xl w-full px-2 sm:px-4 md:px-8 pointer-events-auto transition-[padding] duration-500 ease-out",
+          isScrolled ? "pt-0 pb-0" : "pt-4 md:pt-8 pb-4 md:pb-8"
+        )}>
+          <div className={cn(
+            "flex flex-row justify-between items-center pb-2 pt-2 -mx-2 px-4 sm:-mx-4 sm:px-8 md:-mx-8 md:px-12 border-b border-white/5 bg-black/60 backdrop-blur-xl shadow-[0_10px_30px_-15px_rgba(0,0,0,0.8)] rounded-b-xl transition-opacity duration-500 ease-in-out w-full",
+            isScrolled ? "opacity-100 relative visible" : "opacity-0 absolute inset-0 pointer-events-none invisible"
+          )}>
+            <div className="flex flex-row items-center space-x-3 md:space-x-4">
+              <h1 className="font-semibold text-white tracking-tight text-2xl md:text-3xl">
+                Synapse Society
+              </h1>
+              <div className="rounded-md shadow-[0_0_30px_rgba(147,51,234,0.3)] overflow-hidden w-8 h-8 md:w-12 md:h-12 flex-shrink-0">
+                <video autoPlay loop muted playsInline preload="auto" className="w-full h-full object-cover">
+                  <source src={gifSynapseWebm} type="video/webm" />
+                  <source src={gifSynapse} type="video/mp4" />
+                </video>
+              </div>
+            </div>
+            <div className="flex justify-end">
+              {renderViewButtons(true)}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="max-w-5xl mx-auto px-2 sm:px-4 md:px-8 py-4 md:py-8 relative z-10">
+        
+        {/* LARGE HEADER - NORMAL FLOW */}
+        <div className={cn(
+          "w-full transition-opacity duration-500 ease-in-out relative z-40 mb-4 md:mb-6",
+          isScrolled ? "opacity-0 pointer-events-none" : "opacity-100"
+        )}>
+          <div className="flex flex-col md:flex-row justify-between items-center pb-6 pt-6 -mx-2 px-4 sm:-mx-4 sm:px-8 md:-mx-8 md:px-12 border-b border-white/5 bg-black/60 backdrop-blur-xl shadow-[0_10px_30px_-15px_rgba(0,0,0,0.8)] rounded-b-2xl">
+            <div className="flex flex-col md:items-start text-center md:text-left">
+              <h1 className="font-semibold text-white tracking-tight text-5xl md:text-6xl">
+                Synapse Society
+              </h1>
+              <div className="rounded-md shadow-[0_0_30px_rgba(147,51,234,0.3)] overflow-hidden mt-6 mb-4 max-w-sm w-full flex-shrink-0">
+                <video autoPlay loop muted playsInline preload="auto" className="w-full h-full object-cover">
+                  <source src={gifSynapseWebm} type="video/webm" />
+                  <source src={gifSynapse} type="video/mp4" />
+                </video>
+              </div>
+              <p className="text-zinc-400 font-light text-base md:text-lg tracking-wide">
+                Recruitment Form &bull; 2026
+              </p>
+            </div>
+            <div className="flex justify-center md:justify-end mt-8 md:mt-0">
+              {renderViewButtons(false)}
             </div>
           </div>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="relative z-10 glass-panel p-4 sm:p-6 md:p-8"
-        >
+        <form onSubmit={handleSubmit} className="relative z-10 glass-panel p-4 sm:p-6 md:p-8">
           {viewMode === "strip" ? (
             <div className="space-y-12 pb-6">
               {renderGroup1()}
@@ -669,7 +652,7 @@ export default function MainForm() {
                 className={cn(
                   "flex justify-between relative z-40 transition-all duration-300",
                   isScrolled
-                    ? "sticky top-[68px] md:top-[88px] bg-black/80 backdrop-blur-xl py-4 -mx-4 px-6 sm:-mx-6 sm:px-8 md:-mx-8 md:px-10 border-b border-white/10 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.8)] rounded-b-2xl mb-8"
+                    ? "sticky top-[48px] md:top-[64px] bg-black/80 backdrop-blur-xl py-4 -mx-4 px-6 sm:-mx-6 sm:px-8 md:-mx-8 md:px-10 border-b border-white/10 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.8)] rounded-b-2xl mb-8"
                     : "mb-14 px-2",
                 )}
               >
