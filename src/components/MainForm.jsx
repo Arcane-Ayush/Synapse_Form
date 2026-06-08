@@ -12,6 +12,8 @@ import imgEvent from '../assets/event_management_1780904058528.png';
 import imgStructured from '../assets/structured_projects_1780904084249.png';
 import imgOpenLearning from '../assets/open_learning_1780904094970.png';
 import imgWorkshops from '../assets/workshops_guest_lectures_1780904107273.png';
+import imgPeerDesktop from '../assets/Peer_2_Peer.png';
+import imgWorkshopsDesktop from '../assets/workshops_&_lectures.png';
 
 const INTEREST_OPTIONS = [
   { value: 'Web Development (React, UI/UX, Animations)', label: 'Web Development', image: imgWebDev, bentoClass: 'area-web' },
@@ -23,9 +25,9 @@ const INTEREST_OPTIONS = [
 ];
 
 const COLLAB_OPTIONS = [
-  { value: 'I prefer structured, project-based groups (like our Squads and Sprints)', label: 'Structured & Project-Based', image: imgStructured, bentoClass: 'area-struct' },
-  { value: 'I prefer open-ended peer-to-peer learning and mentoring', label: 'Peer-to-peer Mentoring', image: imgOpenLearning, bentoClass: 'area-peer' },
-  { value: 'I prefer attending workshops and guest lectures', label: 'Workshops & Lectures', image: imgWorkshops, bentoClass: 'area-work' },
+  { value: 'I prefer structured, project-based groups (like our Squads and Sprints).', label: 'Structured & Project-Based', image: imgStructured, bentoClass: 'area-struct' },
+  { value: 'I prefer open-ended peer-to-peer learning and mentoring.', label: 'Peer-to-peer Mentoring', image: imgOpenLearning, desktopImage: imgPeerDesktop, bentoClass: 'area-peer' },
+  { value: 'I prefer attending workshops and guest lectures.', label: 'Workshops & Lectures', image: imgWorkshops, desktopImage: imgWorkshopsDesktop, bentoClass: 'area-work' },
   { value: 'Other', label: 'Other (Specify)', image: null, bentoClass: 'area-collab-other bg-zinc-800' }
 ];
 
@@ -53,7 +55,7 @@ const ParticleBackground = () => {
       const animationDuration = Math.random() * 15 + 10; // 10s to 25s
       const animationDelay = Math.random() * -20; // Start offset
       const isPurple = Math.random() > 0.4;
-      
+
       return (
         <div
           key={i}
@@ -84,26 +86,24 @@ const ParticleBackground = () => {
 const Reveal = ({ children, delay = 0 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
-  
+
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
         setIsVisible(true);
-      } else {
-        setIsVisible(false);
+        if (ref.current) observer.unobserve(ref.current);
       }
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    
+
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
-  
+
   return (
-    <div 
-      ref={ref} 
-      className={`transition-all duration-700 ease-out will-change-transform ${
-        isVisible ? "opacity-100 translate-y-0 revealed" : "opacity-0 translate-y-12"
-      }`}
+    <div
+      ref={ref}
+      className={`transition-all duration-700 ease-out will-change-transform ${isVisible ? "opacity-100 translate-y-0 revealed" : "opacity-0 translate-y-12"
+        }`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
@@ -141,18 +141,18 @@ export default function MainForm() {
     const newErrors = {};
     if (!formData.fullName.trim()) newErrors.fullName = 'Full Name is required';
     if (!formData.uid.trim()) newErrors.uid = 'UID is required';
-    
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim() || !emailRegex.test(formData.email)) {
       newErrors.email = 'A valid email is required';
     }
-    
+
     if (!formData.course.trim()) newErrors.course = 'Course & Year is required';
-    
+
     if (!formData.whatsapp.trim() || !/^\d{10,}$/.test(formData.whatsapp)) {
       newErrors.whatsapp = 'Valid numeric WhatsApp number (min 10 digits) is required';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -163,12 +163,12 @@ export default function MainForm() {
     if (formData.interests.includes('Other') && !formData.interestsOther.trim()) {
       newErrors.interestsOther = 'Please specify your other interest below';
     }
-    
+
     if (formData.collab.length === 0) newErrors.collab = 'Please select a collaboration preference';
     if (formData.collab.includes('Other') && !formData.collabOther.trim()) {
       newErrors.collabOther = 'Please specify your other preference below';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -177,7 +177,7 @@ export default function MainForm() {
     const newErrors = {};
     if (!formData.expUniv.trim()) newErrors.expUniv = 'This field is required';
     if (!formData.expSynapse.trim()) newErrors.expSynapse = 'This field is required';
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -189,11 +189,11 @@ export default function MainForm() {
 
   const handleSubmit = async (e) => {
     e?.preventDefault();
-    
+
     const isG1Valid = validateGroup1();
     const isG2Valid = validateGroup2();
     const isG3Valid = validateGroup3();
-    
+
     if (!isG1Valid || !isG2Valid || !isG3Valid) {
       if (viewMode === 'wizard') {
         if (!isG1Valid) setStep(1);
@@ -205,13 +205,13 @@ export default function MainForm() {
 
     setIsSubmitting(true);
 
-    const payload = new FormData();
+    const payload = new URLSearchParams();
     payload.append('entry.1397498702', formData.fullName);
     payload.append('entry.1751509091', formData.uid);
     payload.append('entry.1105562094', formData.email);
     payload.append('entry.1295414584', formData.course);
     payload.append('entry.1959005397', formData.whatsapp);
-    
+
     formData.interests.forEach(interest => {
       if (interest === 'Other') {
         payload.append('entry.34114088', '__other_option__');
@@ -238,7 +238,10 @@ export default function MainForm() {
       await fetch('https://docs.google.com/forms/d/e/1FAIpQLSfW5KJPnLjxvTToyy7ZDO42nsDz6VzrAXJTfckPHxViiAFpqg/formResponse', {
         method: 'POST',
         mode: 'no-cors',
-        body: payload
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: payload.toString(),
       });
       setIsSuccess(true);
     } catch (err) {
@@ -255,8 +258,8 @@ export default function MainForm() {
         <ParticleBackground />
         <div className="relative z-10 text-center animate-fade-in glass-panel p-12 rounded-md max-w-lg w-full border border-purple-500/20">
           <CheckCircle2 className="w-20 h-20 text-purple-400 mx-auto mb-6 animate-soft-pulse rounded-full" />
-          <h2 className="text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-br from-white to-purple-300 mb-4">Transmission Successful</h2>
-          <p className="text-zinc-400 font-light">Your application has been received by Synapse Society.</p>
+          <h2 className="text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-br from-white to-purple-300 mb-4">Submission Successful</h2>
+          <p className="text-zinc-400 font-light text-lg">Your application has been received by Synapse Society.</p>
         </div>
       </div>
     );
@@ -265,7 +268,7 @@ export default function MainForm() {
   const renderGroup1 = () => (
     <Reveal delay={100}>
       <div className="space-y-6">
-        <h3 className="text-xl font-medium text-white pb-3 mb-6 border-b border-white/10">Personal Information</h3>
+        <h3 className="text-2xl md:text-3xl font-medium text-white pb-3 mb-6 border-b border-white/10">Personal Information</h3>
         <TextInput
           label="Full Name"
           placeholder="Enter your full name"
@@ -315,8 +318,8 @@ export default function MainForm() {
   const renderGroup2 = () => (
     <Reveal delay={200}>
       <div className="space-y-6 relative">
-        <h3 className="text-xl font-medium text-white pb-3 mb-6 border-b border-white/10 flex justify-between items-center">
-          <span>Area of Focus/Interest <span className="text-purple-400 text-sm ml-1">*</span></span>
+        <h3 className="text-2xl md:text-3xl font-medium text-white pb-3 mb-6 border-b border-white/10 flex justify-between items-center">
+          <span>Area of Focus/Interest <span className="text-purple-400 text-base ml-1">*</span></span>
         </h3>
         <CheckboxGroup
           label=""
@@ -343,8 +346,8 @@ export default function MainForm() {
         )}
 
         <div className="pt-8">
-          <h3 className="text-xl font-medium text-white pb-3 mb-6 border-b border-white/10 flex justify-between items-center">
-            <span>Collaboration Preference <span className="text-purple-400 text-sm ml-1">*</span></span>
+          <h3 className="text-2xl md:text-3xl font-medium text-white pb-3 mb-6 border-b border-white/10 flex justify-between items-center">
+            <span>Collaboration Preference <span className="text-purple-400 text-base ml-1">*</span></span>
           </h3>
           <CheckboxGroup
             label=""
@@ -377,9 +380,9 @@ export default function MainForm() {
   const renderGroup3 = () => (
     <Reveal delay={300}>
       <div className="space-y-6">
-        <h3 className="text-xl font-medium text-white pb-3 mb-6 border-b border-white/10">Expectations</h3>
+        <h3 className="text-2xl md:text-3xl font-medium text-white pb-3 mb-6 border-b border-white/10">Expectations</h3>
         <TextArea
-          label="Expectations from a university club"
+          label="What do you, as a student, expect from a university club/Society?"
           placeholder="What are you looking to gain?"
           value={formData.expUniv}
           onChange={e => updateField('expUniv', e.target.value)}
@@ -387,7 +390,7 @@ export default function MainForm() {
           required
         />
         <TextArea
-          label="Expectations from Synapse Society"
+          label="What specific outcomes or experiences do you expect Synapse Society to deliver?"
           placeholder="How can we help you grow?"
           value={formData.expSynapse}
           onChange={e => updateField('expSynapse', e.target.value)}
@@ -395,7 +398,7 @@ export default function MainForm() {
           required
         />
         <TextArea
-          label="Additional ideas/suggestions"
+          label="Any additional ideas, suggestions, or projects you'd love to see happen in the Society?"
           placeholder="Any other thoughts? (Optional)"
           value={formData.ideas}
           onChange={e => updateField('ideas', e.target.value)}
@@ -410,20 +413,20 @@ export default function MainForm() {
       <div className="max-w-5xl mx-auto px-2 sm:px-4 md:px-8 py-4 md:py-8 relative z-10">
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-center mb-12 border-b border-white/5 pb-8 pt-4">
           <div className="flex flex-col items-center md:items-start text-center md:text-left px-2 md:px-0">
-            <h1 className="text-4xl md:text-5xl font-semibold text-white tracking-tight">Synapse Society</h1>
+            <h1 className="text-5xl md:text-6xl font-semibold text-white tracking-tight">Synapse Society</h1>
             <div className="mt-6 mb-4 max-w-sm w-full rounded-md shadow-[0_0_30px_rgba(147,51,234,0.3)] overflow-hidden">
-              <video 
-                src={gifSynapse} 
-                autoPlay 
-                loop 
-                muted 
-                playsInline 
-                className="w-full h-auto object-cover" 
+              <video
+                src={gifSynapse}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-auto object-cover"
               />
             </div>
-            <p className="text-zinc-400 font-light text-sm tracking-wide">Recruitment Form &bull; 2026</p>
+            <p className="text-zinc-400 font-light text-base md:text-lg tracking-wide">Recruitment Form &bull; 2026</p>
           </div>
-          
+
           <div className="mt-8 md:mt-0 flex bg-white/5 p-1 rounded-md border border-white/10 backdrop-blur-md">
             <button
               type="button"
@@ -451,8 +454,8 @@ export default function MainForm() {
               {renderGroup2()}
               {renderGroup3()}
               <div className="pt-8 border-t border-white/10 flex justify-end">
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   disabled={isSubmitting}
                   className="relative overflow-hidden flex items-center justify-center px-8 py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium rounded-md transition-all duration-300 hover:shadow-[0_0_30px_rgba(147,51,234,0.5)] hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed group border border-purple-400/30"
                 >
@@ -467,13 +470,13 @@ export default function MainForm() {
             <div className="pb-6">
               <div className="mb-14 flex justify-between relative px-2">
                 <div className="absolute top-1/2 left-0 right-0 h-[2px] bg-white/5 -z-10 rounded-full"></div>
-                <div 
+                <div
                   className="absolute top-1/2 left-0 h-[2px] bg-purple-500 -z-10 transition-all duration-700 ease-in-out shadow-[0_0_10px_rgba(147,51,234,0.5)] rounded-full"
                   style={{ width: `${((step - 1) / 2) * 100}%` }}
                 ></div>
                 {[1, 2, 3].map(s => (
-                  <div 
-                    key={s} 
+                  <div
+                    key={s}
                     className={cn(
                       "w-10 h-10 rounded-full flex items-center justify-center font-medium transition-all duration-500 border-2 bg-black",
                       step >= s ? "border-purple-500 text-white shadow-[0_0_15px_rgba(147,51,234,0.3)]" : "border-white/10 text-zinc-600"
@@ -501,7 +504,7 @@ export default function MainForm() {
                 >
                   Back
                 </button>
-                
+
                 {step < 3 ? (
                   <button
                     type="button"
@@ -530,11 +533,11 @@ export default function MainForm() {
       </div>
 
       {activeModal && (
-        <div 
+        <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in"
           onClick={() => setActiveModal(null)}
         >
-          <div 
+          <div
             className="bg-zinc-900 border border-white/10 p-8 rounded-xl w-full max-w-md shadow-2xl animate-slide-up"
             onClick={e => e.stopPropagation()}
           >
@@ -544,7 +547,7 @@ export default function MainForm() {
                 <X className="w-5 h-5" />
               </button>
             </div>
-            
+
             <TextInput
               label={activeModal === 'interests' ? "What's your interest?" : "What's your preference?"}
               placeholder="Type it out here..."
@@ -552,10 +555,10 @@ export default function MainForm() {
               onChange={e => updateField(activeModal === 'interests' ? 'interestsOther' : 'collabOther', e.target.value)}
               autoFocus
             />
-            
-            <button 
+
+            <button
               type="button"
-              onClick={() => setActiveModal(null)} 
+              onClick={() => setActiveModal(null)}
               className="w-full mt-6 bg-white text-black hover:bg-zinc-200 py-3 rounded-md font-medium transition-all"
             >
               Done
