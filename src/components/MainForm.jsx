@@ -11,17 +11,17 @@ import { TextInput, TextArea, CheckboxGroup, cn } from "./FormInputs";
 
 import gifSynapse from "../assets/Gif_synapse.mp4";
 import gifSynapseWebm from "../assets/Gif_synapse.webm";
-import imgWebDev from "../assets/web_development_1780904007038.png";
-import imgAi from "../assets/ai_machine_learning_1780904019865.png";
-import imgSystems from "../assets/systems_programming_1780904031735.png";
-import imgOpenSource from "../assets/open_source_1780904045447.png";
-import imgEvent from "../assets/event_management_1780904058528.png";
+import imgWebDev from "../assets/web_development_1780904007038.webp";
+import imgAi from "../assets/ai_machine_learning_1780904019865.webp";
+import imgSystems from "../assets/systems_programming_1780904031735.webp";
+import imgOpenSource from "../assets/open_source_1780904045447.webp";
+import imgEvent from "../assets/event_management_1780904058528.webp";
 
-import imgStructured from "../assets/structured_projects_1780904084249.png";
-import imgOpenLearning from "../assets/open_learning_1780904094970.png";
-import imgWorkshops from "../assets/workshops_guest_lectures_1780904107273.png";
-import imgPeerDesktop from "../assets/Peer_2_Peer.png";
-import imgWorkshopsDesktop from "../assets/workshops_&_lectures.png";
+import imgStructured from "../assets/structured_projects_1780904084249.webp";
+import imgOpenLearning from "../assets/open_learning_1780904094970.webp";
+import imgWorkshops from "../assets/workshops_guest_lectures_1780904107273.webp";
+import imgPeerDesktop from "../assets/Peer_2_Peer.webp";
+import imgWorkshopsDesktop from "../assets/workshops_&_lectures.webp";
 
 const INTEREST_OPTIONS = [
   {
@@ -171,8 +171,8 @@ const Reveal = ({ children, delay = 0 }) => {
     <div
       ref={ref}
       className={`transition-[opacity,transform] duration-700 ease-out will-change-[transform,opacity] ${isVisible
-          ? "opacity-100 translate-y-0 revealed"
-          : "opacity-0 translate-y-12"
+        ? "opacity-100 translate-y-0 revealed"
+        : "opacity-0 translate-y-12"
         }`}
       style={{ transitionDelay: `${delay}ms` }}
     >
@@ -583,7 +583,7 @@ export default function MainForm() {
             isScrolled ? "opacity-100 relative visible" : "opacity-0 absolute inset-0 pointer-events-none invisible"
           )}>
             <div className="flex flex-row items-center space-x-3 md:space-x-4">
-              <h1 className="font-semibold text-white tracking-tight text-2xl md:text-3xl">
+              <h1 className="font-semibold text-white tracking-tight text-2xl max-[380px]:text-xl max-[350px]:text-lg md:text-3xl whitespace-nowrap">
                 Synapse Society
               </h1>
               <div className="rounded-md shadow-[0_0_30px_rgba(147,51,234,0.3)] overflow-hidden w-8 h-8 md:w-12 md:h-12 flex-shrink-0">
@@ -593,14 +593,14 @@ export default function MainForm() {
                 </video>
               </div>
             </div>
-            <div className="flex justify-end">
+            <div className="flex justify-end flex-shrink-0">
               {renderViewButtons(true)}
             </div>
           </div>
         </div>
       </div>
       <div className="max-w-5xl mx-auto px-2 sm:px-4 md:px-8 py-4 md:py-8 relative z-10">
-        
+
         {/* LARGE HEADER - NORMAL FLOW */}
         <div className={cn(
           "w-full transition-opacity duration-500 ease-in-out relative z-40 mb-4 md:mb-6",
