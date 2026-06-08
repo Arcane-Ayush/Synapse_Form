@@ -119,8 +119,12 @@
   animation: rotateBorder 3s linear infinite;
   opacity: 0;
   transition: opacity 0.4s ease;
-  filter: blur(4px);
-  /* Adds a soft glow to the line */
+}
+
+@media (min-width: 768px) {
+  .interactive-card::before {
+    filter: blur(4px);
+  }
 }
 
 /* Focus state activates the spinning border */
@@ -416,6 +420,8 @@
 
 .animate-float-up {
   animation: floatUp linear infinite;
+  will-change: transform, opacity;
+  contain: strict;
 }
 
 .mask-fade-bottom {
